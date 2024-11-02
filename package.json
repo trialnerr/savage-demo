@@ -5,20 +5,18 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "savage": "nodemon server.js"
+    "savage": "node --watch server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "assert": "^1.4.1",
-    "body-parser": "^1.14.2",
     "bson": ">=1.0.5",
-    "ejs": "^3.1.8",
-    "express": "^4.13.3",
-    "mongodb": "^3.3.4"
+    "ejs": "^3.1.10",
+    "express": "^4.21.1",
+    "mongodb": "^6.10.0"
   },
   "devDependencies": {
-    "minimist": ">=1.2.2",
-    "nodemon": "^2.0.4"
+    "minimist": ">=1.2.2"
   }
 }
