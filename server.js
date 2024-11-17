@@ -8,31 +8,21 @@ const url =
   'mongodb+srv://demo:demo@cluster0-q2ojb.mongodb.net/test?retryWrites=true';
 const dbName = 'demo';
 
-// app.listen(3000, () => {
-//   MongoClient.connect(url, async (error, client) => {
-
-//       if (error) {
-//             throw error;
-//       }
-//         db = client.db(dbName);
-//         console.log("Connected to `" + dbName + "`!");
-//     });
-// }, console.log('Server is running on port 3000'));
-
-(async () => {
+const startApp = async () => {
   try {
     const client = await MongoClient.connect(url);
     db = client.db(dbName);
-    console.log('Connected to `' + dbName + '`!');
+    console.log(`Connected to database ${dbName}`);
 
-    // Start the server only after successful connection
     app.listen(3000, () => {
       console.log('Server is running on port 3000');
     });
   } catch (error) {
     console.error('Failed to connect to the database:', error);
   }
-})();
+}
+
+startApp()
 
 app.set('view engine', 'ejs');
 app.use(express.json());
@@ -50,24 +40,6 @@ app.get('/', async (req, res) => {
   }
 });
 
-//  db.collection('messages')
-//    .find()
-//    .toArray((err, result) => {
-//      if (err) return console.log(err);
-//      res.render('index.ejs', { messages: result });
-//    });
-
-// app.post('/messages', (req, res) => {
-//   const { name, msg } = req.body;
-//   db.collection('messages').insertOne(
-//     { name, msg, thumbUp: 0, thumbDown: 0 },
-//     (err, result) => {
-//       if (err) return console.log(err);
-//       console.log('saved to database');
-//       res.redirect('/');
-//     }
-//   );
-// });
 
 app.post('/messages', async (req, res) => {
   console.log(req.body);
@@ -108,8 +80,8 @@ app.put('/messages', async (req, res) => {
       result = await db.collection('messages').updateOne(
         { name, msg },
         {
-          $set: {
-            thumbDown: thumbDown + 1,
+          $inc: {
+            thumbUp: -1,
           },
         },
         {
@@ -126,16 +98,6 @@ app.put('/messages', async (req, res) => {
   }
 });
 
-// app.delete('/messages', (req, res) => {
-//   db.collection('messages').deleteOne(
-//     { name: req.body.name, msg: req.body.msg },
-//     (err, result) => {
-//       if (err) return res.send(500, err);
-//       res.send('Message deleted!');
-//     }
-//   );
-// });
-
 app.delete('/messages', async (req, res) => {
   const { name, msg } = req.body; 
   try {
@@ -149,3 +111,4 @@ app.delete('/messages', async (req, res) => {
   }
   
 })
+
